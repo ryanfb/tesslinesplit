@@ -1,5 +1,7 @@
-#include <tesseract/baseapi.h>
-#include <leptonica/allheaders.h>
+//#include <tesseract/baseapi.h>
+//#include <leptonica/allheaders.h>
+#include "baseapi.h"
+#include "allheaders.h"
 #include <string>
 #include <libgen.h>
 
@@ -11,19 +13,25 @@ int main(int argc, char *argv[]) {
 
   std::string output_dir = std::string(argv[2]);
 
-  Pix *image = pixRead(input_filename.c_str());
   tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
   api->Init(NULL, "eng");
+  Pix *image0 = pixRead(input_filename.c_str());
+  api->SetImage(image0);
+  Pix* image = api->GetThresholdedImage();
   api->SetImage(image);
-  Boxa* boxes = api->GetComponentImages(tesseract::RIL_TEXTLINE, true, NULL, NULL);
+  Boxa* boxes = api->GetComponentImages(tesseract::RIL_TEXTLINE, true, false, 0, NULL, NULL, NULL);
+  printf("204c\n");
+
+
   printf("Found %d textline image components.\n", boxes->n);
 
   int lastindex = input_basename.find_last_of(".");
   std::string basename = input_basename.substr(0, lastindex).c_str();
   std::string extension = input_basename.substr(lastindex + 1).c_str();
+
   std::string outdir = output_dir.c_str();
-  int linedirLen = outdir.length()+1+basename.length()+strlen("-line_extract_")+extension.length()+1;
-  char* linedir = (char*)malloc(linedirLen*sizeof(char));
+  int linedirLen = outdir.length()+1+basename.length()+strlen("-line_extract_")+extension.length();
+  char* linedir = (char*)malloc((linedirLen+1)*sizeof(char));
   sprintf(linedir, "%s/%s-line_extract_%s", output_dir.c_str(), basename.c_str(), extension.c_str());
   printf("Writing to directory [%s].  If this fails, try:\n    mkdir -p %s\n\n\n", linedir, linedir);
 
@@ -39,5 +47,7 @@ int main(int argc, char *argv[]) {
     boxDestroy(&box);
     free(linefilename);
   }
+
+  free(linedir);
   return 0;
 }
