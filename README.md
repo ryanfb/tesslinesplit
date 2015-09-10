@@ -11,4 +11,4 @@ Requirements:
 Usage:
 
  * `make`
- * `./tesslinesplit input.png`
+ * `./tesslinesplit imagefile.ext outputdir`
