@@ -4,7 +4,7 @@
 #include <libgen.h>
 
 int main(int argc, char *argv[]) {
-  if(argc != 3) { printf("USAGE: %s imagefile outputdir", argv[0]); }
+  if(argc != 3) { printf("USAGE: %s imagefile outputdir\n", argv[0]); return 1; }
 
   std::string input_filename = std::string(argv[1]);
   std::string input_basename = std::string(basename(argv[1]));
@@ -18,8 +18,6 @@ int main(int argc, char *argv[]) {
   Pix* image = api->GetThresholdedImage();
   api->SetImage(image);
   Boxa* boxes = api->GetComponentImages(tesseract::RIL_TEXTLINE, true, false, 0, NULL, NULL, NULL);
-  printf("204c\n");
-
 
   printf("Found %d textline image components.\n", boxes->n);
 
@@ -32,6 +30,8 @@ int main(int argc, char *argv[]) {
   char* linedir = (char*)malloc((linedirLen+1)*sizeof(char));
   sprintf(linedir, "%s/%s-line_extract_%s", output_dir.c_str(), basename.c_str(), extension.c_str());
   printf("Writing to directory [%s].  If this fails, try:\n    mkdir -p %s\n\n\n", linedir, linedir);
+  std::string mkdir_cmd = "mkdir -p " + std::string(linedir);
+  system(mkdir_cmd.c_str());
 
   for (int i = 0; i < boxes->n; i++) {
     BOX* box = boxaGetBox(boxes, i, L_CLONE);
