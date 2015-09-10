@@ -8,6 +8,8 @@ Requirements:
  * `tesseract`
  * `leptonica`
 
+Requirements are handled in the `Makefile` via `pkg-config`. You may need the `-dev` versions of the `lib` packages for these requirements, depending on your system and package manager.
+
 Usage:
 
  * `make`
