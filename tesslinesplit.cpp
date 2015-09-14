@@ -15,6 +15,7 @@ int main(int argc, char *argv[]) {
   api->Init(NULL, "eng");
   Pix *image0 = pixRead(input_filename.c_str());
   api->SetImage(image0);
+  l_int32 input_format = pixGetInputFormat(image0);
   Pix* image = api->GetThresholdedImage();
   api->SetImage(image);
   Boxa* boxes = api->GetComponentImages(tesseract::RIL_TEXTLINE, true, false, 0, NULL, NULL, NULL);
@@ -40,7 +41,7 @@ int main(int argc, char *argv[]) {
     char* linefilename = (char*)malloc((linedirLen+strlen("/line00.")+extension.length()+1)*sizeof(char));
     sprintf(linefilename, "%s/line%02d.%s", linedir, i, extension.c_str());
     printf("  Writing %s\n", linefilename);
-    pixWrite(linefilename, pixd, IFF_DEFAULT);
+    pixWrite(linefilename, pixd, input_format);
     pixDestroy(&pixd);
     boxDestroy(&box);
     free(linefilename);
