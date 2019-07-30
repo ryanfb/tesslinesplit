@@ -12,5 +12,5 @@ Requirements are handled in the `Makefile` via `pkg-config`. You may need the `-
 
 Usage:
 
- * `make`
- * `./tesslinesplit imagefile.ext outputdir`
+ * `make tesslinesplit-ocular`
+ * `./tesslinesplit-ocular imagefile.ext outputdir`
