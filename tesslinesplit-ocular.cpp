@@ -4,7 +4,7 @@
 #include <libgen.h>
 
 int main(int argc, char *argv[]) {
-  if(argc != 3) { printf("USAGE: %s imagefile outputdir\n", argv[0]); return 1; }
+  if((argc != 3) && (argc != 4)) { printf("USAGE: %s imagefile outputdir [lang]\n", argv[0]); return 1; }
 
   std::string input_filename = std::string(argv[1]);
   std::string input_basename = std::string(basename(argv[1]));
@@ -12,7 +12,12 @@ int main(int argc, char *argv[]) {
   std::string output_dir = std::string(argv[2]);
 
   tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
-  api->Init(NULL, "eng");
+  if (argc == 4) {
+    api->Init(NULL, argv[3]);
+  }
+  else {
+    api->Init(NULL, "eng");
+  }
   Pix *image0 = pixRead(input_filename.c_str());
   api->SetImage(image0);
   l_int32 input_format = pixGetInputFormat(image0);
