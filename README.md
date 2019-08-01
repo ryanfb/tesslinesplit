@@ -18,3 +18,7 @@ Usage:
  * `make`
  * `./tesslinesplit-ocular imagefile.ext outputdir`
  * `./tesslinesplit-kraken imagefile.ext outputfile.json`
+
+[Docker usage](https://hub.docker.com/r/ryanfb/tesslinesplit):
+
+    docker run -ti -v $(pwd):/data ryanfb/tesslinesplit tesslinesplit-kraken inputimage.png outputsegmentation.json
